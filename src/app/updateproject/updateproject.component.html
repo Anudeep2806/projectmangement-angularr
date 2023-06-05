@@ -1,0 +1,44 @@
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">ProjectCode</th>
+        <th scope="col">Title</th>
+        <th scope="col">CreatedOn</th>
+        <th scope="col">Budget</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">Expected End Date</th>
+        <th scope="col">Last Updated On</th>
+        <th scope="col">Status</th>
+        <th scope="col"></th>
+        <th scope="col">ClientId</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let project of projects; let i = index">
+        <th scope="row">{{i+1}}</th>
+        <td>{{project.projectCode}}</td>
+        <td>{{project.title}}</td>
+        <td>{{project.createdOn}}</td>
+        <td>{{project.budget}}</td>
+        <td>{{project.startDate}}</td>
+        <td>{{project.expectedEndDate}}</td>
+        <td>{{project.lastUpdatedOn}}</td>
+        <td>
+            <select [disabled]="project.status === 'Cancelled' || project.status === 'Completed'" #statusSelect>
+                <option  [value]="project.status">{{ project.status }}</option>
+                <option [value]="'New'" *ngIf="project.status !== 'New'">New</option>
+                <option [value]="'InProgress'"  *ngIf="project.status !== 'InProgress'">In Progress</option>
+                <option [value]="'Completed'"  *ngIf="project.status !== 'Completed'">Completed</option>
+                <option [value]="'Delayed'"  *ngIf="project.status !== 'Delayed'">Delayed</option>
+                <option [value]="'Cancelled'"  *ngIf="project.status !== 'Cancelled'">Cancelled</option>
+              </select>
+        </td>
+        <td>
+            <button class="btn btn-primary" (click)="saveStatus(project.projectCode,statusSelect.value)" [disabled]="project.status === 'Cancelled' || project.status === 'Completed'">Save</button>
+        </td>
+        <td>{{project.cId}}</td>
+      </tr>
+      
+    </tbody>
+  </table>

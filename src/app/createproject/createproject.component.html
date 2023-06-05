@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Project</title>
+</head>
+<body>
+  <div class="container">
+    <h2 class="text-center">New Project</h2>
+    <form  [formGroup]="projectForm" (ngSubmit)="formSubmit()" >
+      <div class="form-group">
+        <label for="projectCode">Project Code:</label>
+        <input  formControlName="projectCode" type="number" class="form-control" id="projectCode" placeholder="Enter project code" required>
+        
+      </div>
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input  formControlName="title" type="text" class="form-control" id="title" placeholder="Enter title" required>
+        
+       </div>
+      <div class="form-group">
+        <label for="createdOn">Created On:</label>
+        <input  formControlName="createdOn"type="date" class="form-control" id="createdOn" required>
+      </div>
+      <div class="form-group">
+        <label for="budget">Budget:</label>
+        <input  formControlName="budget" type="number" class="form-control" id="budget" placeholder="Enter budget" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input  formControlName="startDate" type="date" class="form-control" id="startDate" required>
+        
+    </div>
+      <div class="form-group">
+        <label for="expectedEndDate">Expected End Date:</label>
+        <input   formControlName="expectedEndDate"type="date" class="form-control" id="expectedEndDate" required>
+        
+    </div>
+      <div class="form-group">
+        <label for="lastUpdatedOn">Last Updated On:</label>
+        <input   formControlName="lastUpdatedOn"type="date" class="form-control" id="lastUpdatedOn" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <select   formControlName="status"class="form-control" id="status" required>
+          <option value="New">New</option>
+          <option value="InProgress">In Progress</option>
+          <option value="Completed">Completed</option>
+          <option value="Delayed">Delayed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+        
+      </div>
+      <div class="form-group" >
+        <label for="clientId">Client:</label>
+        <select id="clientId" formControlName="cId"  class="form-control" required>
+          <option *ngFor="let client of clients" [value]="client.id">(ID:{{client.id}}) {{client.name }}</option>
+        </select>
+      </div>
+      <div class="text-center">
+      <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+  
+
+</body>
+</html>
