@@ -12,35 +12,52 @@
       <div class="form-group">
         <label for="projectCode">Project Code:</label>
         <input  formControlName="projectCode" type="number" class="form-control" id="projectCode" placeholder="Enter project code" required>
-        
+        <div *ngIf="projectForm.get('projectCode').invalid && projectForm.get('projectCode').touched" class="error-message">
+          Project Code is required and should only consist numbers.
+        </div>
       </div>
       <div class="form-group">
         <label for="title">Title:</label>
         <input  formControlName="title" type="text" class="form-control" id="title" placeholder="Enter title" required>
-        
+        <div *ngIf="projectForm.get('title').invalid && projectForm.get('title').touched" class="error-message">
+          Title is required and must be at least 3 characters long.
+        </div>
        </div>
       <div class="form-group">
         <label for="createdOn">Created On:</label>
         <input  formControlName="createdOn"type="date" class="form-control" id="createdOn" required>
+        <div *ngIf="projectForm.get('createdOn').invalid && projectForm.get('createdOn').touched" class="error-message">
+          Created On Date is required.
+        </div>
       </div>
       <div class="form-group">
         <label for="budget">Budget:</label>
         <input  formControlName="budget" type="number" class="form-control" id="budget" placeholder="Enter budget" required>
+        <div *ngIf="projectForm.get('budget').invalid && projectForm.get('budget').touched" pattern="[0-9]"class="error-message">
+          Budget is required and must be a number.
+        </div>
       </div>
       
       <div class="form-group">
         <label for="startDate">Start Date:</label>
         <input  formControlName="startDate" type="date" class="form-control" id="startDate" required>
-        
+        <div *ngIf="projectForm.get('startDate').invalid && projectForm.get('startDate').touched" class="error-message">
+          Start Date is required.
+        </div>
     </div>
       <div class="form-group">
         <label for="expectedEndDate">Expected End Date:</label>
         <input   formControlName="expectedEndDate"type="date" class="form-control" id="expectedEndDate" required>
-        
+        <div *ngIf="projectForm.get('expectedEndDate').invalid && projectForm.get('expectedEndDate').touched" class="error-message">
+          Expected end date is required.
+        </div>
     </div>
       <div class="form-group">
         <label for="lastUpdatedOn">Last Updated On:</label>
         <input   formControlName="lastUpdatedOn"type="date" class="form-control" id="lastUpdatedOn" required>
+        <div *ngIf="projectForm.get('lastUpdatedOn').invalid && projectForm.get('lastUpdatedOn').touched" class="error-message">
+          lastUpdatedOn is required.
+        </div>
       </div>
       
       <div class="form-group">
@@ -52,16 +69,27 @@
           <option value="Delayed">Delayed</option>
           <option value="Cancelled">Cancelled</option>
         </select>
-        
+        <div *ngIf="projectForm.get('status').invalid && projectForm.get('status').touched" class="error-message">
+          Status is required.
+        </div>
       </div>
       <div class="form-group" >
         <label for="clientId">Client:</label>
         <select id="clientId" formControlName="cId"  class="form-control" required>
           <option *ngFor="let client of clients" [value]="client.id">(ID:{{client.id}}) {{client.name }}</option>
         </select>
+        <div *ngIf="projectForm.get('cId').invalid && projectForm.get('cId').touched" class="error-message">
+          Client is required.
+        </div>
+      </div>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <div *ngIf="success" class="success">
+        {{ success }}
       </div>
       <div class="text-center">
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" [disabled]="projectForm.invalid" class="btn btn-primary">Submit</button>
       </div>
     </form>
   </div>

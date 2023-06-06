@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { UpdateprojectService } from '../services/updateproject.service';
 
 @Component({
   selector: 'app-updateproject',
@@ -8,8 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UpdateprojectComponent  implements OnInit{
   projects: any[];
+  success: string;
+  errorMessage: string;
 
-  constructor(private http: HttpClient){
+  constructor(private ups: UpdateprojectService){
 
   }
          
@@ -17,21 +20,33 @@ export class UpdateprojectComponent  implements OnInit{
      this.loadProjects();
   }
   loadProjects(){
-    this.http.get<any[]>('http://localhost:8080/api/projects').subscribe(projects=>{
+    this.ups.getProjects().subscribe(projects=>{
       this.projects=projects;
     });
   }
   saveStatus(projectCode: number, status: string) {
-    const url = `http://localhost:8080/api/projects/${projectCode}/update`;
-    const requestBody = { status: status };
-
-    this.http.put(url, requestBody).subscribe((response) => {
+    this.ups.updateStatus(projectCode,status).subscribe((response) => {
         console.log('Status updated successfully');
-        alert('Status Updated Succesfully');
-      }, (error) => {
-        console.error('Failed to update status:', error);
-        // You can handle the error scenario here
-      });
-  }
+        this.success='Status Updated Succesfully';
+      },  error => {
+        this.errorHandler(error);
+      }
+           );
+      }errorHandler(error: HttpErrorResponse) {
+      
+    
+        if (error.error instanceof ErrorEvent) {
+          // Client-side error
+    
+          this.errorMessage = error.error.message;
+        }
+        else {
+          // Server-side error
+          this.errorMessage = error.error;
+    
+        }
+        
+        console.error("err:"+this.errorMessage);
+      }
 
 }

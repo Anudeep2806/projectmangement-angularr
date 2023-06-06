@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AddresourceService } from '../services/addresource.service';
 
 
 @Component({
@@ -13,51 +14,63 @@ export class AddresourceComponent  implements OnInit{
 
 
    projects: any[]=[];
+   errorMessage: String;
 
    generatedUserId: any;
    res: string;
    resourceForm:FormGroup;
  
    constructor(
-     private http: HttpClient) {
+     private ads: AddresourceService) {
    }
-   
- 
    ngOnInit(): void{
      this.loadProjects();
      this.resourceForm=new FormGroup(
-      {'firstName':new FormControl(null,Validators.required),
-      'lastName':new FormControl(null,Validators.required),
+      {'firstName':new FormControl(null,[Validators.required,Validators.pattern('^[A-Za-z]+$')]),
+      'lastName':new FormControl(null,[Validators.required,Validators.pattern('^[A-Za-z]+$')]),
       'email': new FormControl(null,Validators.required),
       'phno': new FormControl(null,Validators.required),
       'role': new FormControl('Tester',Validators.required),
-      'projectCode': new FormControl(null,Validators.required)}
-      
-      
-      );
+      'projectCode': new FormControl(null,Validators.required)
+    });
       console.log(this.resourceForm);
    }
  
    loadProjects(){
-     this.http.get<any[]>('http://localhost:8080/api/projects').subscribe(projects=>{
+     this.ads.getProjects().subscribe(projects=>{
        this.projects=projects.filter(project=>project.status!=='Cancelled' && project.status!=='Completed');
      });
    }
  
    resourceSubmit(){
-        this.http.post<any>('http://localhost:8080/api/projects/addresource',this.resourceForm.value
-        ).subscribe(
-          response=>{
-            
+    if (this.resourceForm.invalid) {
+      this.resourceForm.markAllAsTouched();
+      return;
+    }
+        this.ads.updateStatus(this.resourceForm).subscribe(response=>{  
         this.generatedUserId=response;
         this.res='Resource created !'+JSON.stringify(this.generatedUserId);
         console.log('Resource created with User Id:'+this.generatedUserId);
    },
-   error=>{
-     console.error("Error:"+error.message);
-     
-   }
-        );
-   }
+   error => {
+    this.errorHandler(error);
+  }
+       );
+  }errorHandler(error: HttpErrorResponse) {
+  
+
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+
+      this.errorMessage = error.error.message;
+    }
+    else {
+      // Server-side error
+      this.errorMessage = error.error;
+
+    }
+    
+    console.error("err:"+this.errorMessage);
+  }
  } 
    

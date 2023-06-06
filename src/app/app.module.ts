@@ -10,19 +10,24 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {  RouterModule, Routes } from '@angular/router';
 import { UpdateprojectComponent } from './updateproject/updateproject.component';
 import { NotfoundComponent } from './notfound/notfound.component';
+import { HomeComponent } from './home/home.component';
 
 
 const route: Routes=[{path:'createproject',component:CreateprojectComponent},
              {path:'addresource',component:AddresourceComponent},
             {path: 'updateproject',component:UpdateprojectComponent},
-          {path:"**",component:NotfoundComponent}]
+            {path: '',component:HomeComponent},
+          {path:'**',component:NotfoundComponent},
+          
+        ]
 @NgModule({
   declarations: [
     AppComponent,
     CreateprojectComponent,
     AddresourceComponent,
     UpdateprojectComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

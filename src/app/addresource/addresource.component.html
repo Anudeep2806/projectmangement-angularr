@@ -4,58 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Resource</title>
-    
 </head>
 <body>
     <div class="container">
         <h2>New Resource</h2>
-        <form  [formGroup]="resourceForm" id="addResourceForm" (ngSubmit)="resourceSubmit()" class="needs-validation" novalidate>
-           
+        <form [formGroup]="resourceForm" id="addResourceForm" (ngSubmit)="resourceSubmit()" class="needs-validation" novalidate>
             <div class="form-group">
                 <label for="firstName">First Name:</label>
-                <input   formControlName='firstName' type="text" class="form-control" id="firstName" name="firstName" minlength="3" required>
-                
+                <input formControlName="firstName" type="text" class="form-control" id="firstName" name="firstName" minlength="3" required>
+                <div *ngIf="resourceForm.get('firstName').invalid && resourceForm.get('firstName').touched"  class="error-message">
+                    First Name should only contain alphabets and be at least 3 characters long.
+                </div>
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name:</label>
-                <input  formControlName="lastName"  type="text" class="form-control" id="lastName" name="lastName" minlength="3" required>
+                <input formControlName="lastName" type="text" class="form-control" id="lastName" name="lastName" minlength="3" required>
+                <div *ngIf="resourceForm.get('lastName').invalid && resourceForm.get('lastName').touched"  class="error-message">
+                    Last Name should only contain alphabets and be at least 3 characters long.
+                </div>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input  formControlName="email" type="email" class="form-control" id="email" name="email" pattern="^[a-zA-Z0-9_.+-]+@cognizant\.com$" required>
+                <input formControlName="email" type="email" class="form-control" id="email" name="email" pattern="^[a-zA-Z0-9_.+-]+@cognizant\.com$" required>
+                <div *ngIf="resourceForm.get('email').invalid && resourceForm.get('email').touched" class="error-message">
+                    Email should be a valid @cognizant.com address.
+                </div>
             </div>
             <div class="form-group">
                 <label for="phno">Phone Number:</label>
-                <input  formControlName="phno" type="tel" class="form-control" id="phno" name="phno" minlength="10" maxlength="10" pattern="[0-9]{10}" required>
+                <input formControlName="phno" type="tel" class="form-control" id="phno" name="phno" minlength="10" maxlength="10" pattern="[0-9]{10}" required>
+                <div *ngIf="resourceForm.get('phno').invalid && resourceForm.get('phno').touched" class="error-message">
+                    Phone Number should be exactly 10 digits long consisting only numbers.
+                </div>
             </div>
             <div class="form-group">
                 <label for="role">Role:</label>
                 <div class="form-check">
-                    <input  formControlName="role" class="form-check-input" type="radio" name="role" id="developer" value="Developer" required>
+                    <input formControlName="role" class="form-check-input" type="radio" name="role" id="developer" value="Developer" required>
                     <label class="form-check-label" for="developer">Developer</label>
                 </div>
                 <div class="form-check">
-                    <input  formControlName="role" class="form-check-input" type="radio" name="role" id="tester" value="Tester" required>
+                    <input formControlName="role" class="form-check-input" type="radio" name="role" id="tester" value="Tester" required>
                     <label class="form-check-label" for="tester">Tester</label>
+                </div>
+                <div *ngIf="resourceForm.get('role').invalid && resourceForm.get('role').touched" class="error-message">
+                    Role is required.
                 </div>
             </div>
             <div class="form-group">
                 <label for="projectCode">Project:</label>
-                <select id="projectCode" name="projectCode" formControlName="projectCode"  required class="form-control">
-                  <option *ngFor="let project of projects"  [value]="project.projectCode">
-                    {{ project.title }}(ID: {{project.projectCode}})(Status: {{project.status}})
-                  </option>
+                <select id="projectCode" name="projectCode" formControlName="projectCode" required class="form-control">
+                    <option *ngFor="let project of projects" [value]="project.projectCode">
+                        {{ project.title }} (ID: {{ project.projectCode }}) (Status: {{ project.status }})
+                    </option>
                 </select>
-                <div class="invalid-feedback">Project is required.</div>
+                <div *ngIf="resourceForm.get('projectCode').invalid && resourceForm.get('projectCode').touched" class="error-message">
+                    Project is required.
+                </div>
+            </div>
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
               </div>
-              <div *ngIf="generatedUserId" class="alert alert-success">
-               <p>{{res}}</p>
-              </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div *ngIf="generatedUserId" class="alert alert-success">
+                <p>{{ res }}</p>
+            </div>
+            <button type="submit" [disabled]="resourceForm.invalid" class="btn btn-primary">Submit</button>
         </form>
     </div>
-   
-
-   
 </body>
 </html>
