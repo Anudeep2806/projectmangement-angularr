@@ -1,7 +1,9 @@
+<h2 class="text-center">List of Projects</h2>
 <div *ngIf="success" class="success text-center">
   {{ success }}
 </div>
-<table class="table">
+<div class="table-responsive mx-5 ">
+<table class="table table-light table-bordered ">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -18,7 +20,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let project of projects; let i = index">
+      <tr *ngFor="let project of projects; let i = index" class="table-info table-group-divider">
         <th scope="row">{{i+1}}</th>
         <td>{{project.projectCode}}</td>
         <td>{{project.title}}</td>
@@ -45,3 +47,4 @@
       
     </tbody>
   </table>
+</div>
